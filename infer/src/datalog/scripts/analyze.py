@@ -30,13 +30,15 @@ if which("infer") is None:
     sys.exit("Please install Infer and make sure it is included in $PATH")
 
 out_dir = args.output if args.output else "infer-out"
-fact_dir = out_dir + "/facts"
-analysis_output_dir = out_dir + "/analysis_results"
-inference_rules_path = os.path.realpath(os.path.dirname(__file__)) + "/../Analysis.dl"
+fact_dir = f"{out_dir}/facts"
+analysis_output_dir = f"{out_dir}/analysis_results"
+inference_rules_path = (
+    f"{os.path.realpath(os.path.dirname(__file__))}/../Analysis.dl"
+)
 
 infer_cmd = ["infer", "run", "--datalog-only", "-o", out_dir]
 if args.infer_args:
-    infer_cmd.extend([arg for arg in args.infer_args.split(',')])
+    infer_cmd.extend(list(args.infer_args.split(',')))
 else:
     infer_cmd.extend(["--quiet"])
 infer_cmd.extend(["--", "javac"])
@@ -44,7 +46,7 @@ infer_cmd.extend(args.sourcefiles)
 
 souffle_cmd = ["souffle", "-F", fact_dir, "-D", analysis_output_dir]
 if args.souffle_args:
-    souffle_cmd.extend([arg for arg in args.souffle_args.split(',')])
+    souffle_cmd.extend(list(args.souffle_args.split(',')))
 souffle_cmd.extend([inference_rules_path])
 
 subprocess.run(infer_cmd, check=True)

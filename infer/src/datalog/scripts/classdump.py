@@ -44,11 +44,18 @@ if not os.path.exists(out_dir):
 
 for jar in args.jars:
     jar_filename = os.path.basename(jar)
-    out_path = out_dir + "/" + jar_filename
+    out_path = f"{out_dir}/{jar_filename}"
 
-    subprocess.run(["java", "-jar", "-agentlib:hprof=heap=sites,file=" + out_path + ".hprof", jar])
-    hprof_output = open(out_path + ".hprof", mode="r").read()
+    subprocess.run(
+        [
+            "java",
+            "-jar",
+            f"-agentlib:hprof=heap=sites,file={out_path}.hprof",
+            jar,
+        ]
+    )
+    hprof_output = open(f"{out_path}.hprof", mode="r").read()
     classes = get_classnames(hprof_output)
-    f = open(out_path + ".classes", "w")
+    f = open(f"{out_path}.classes", "w")
     for c in classes:
         f.write(c + "\n")

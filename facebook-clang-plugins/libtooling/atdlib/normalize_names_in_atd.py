@@ -56,10 +56,7 @@ def main():
     arg_parser = argparse.ArgumentParser(description='Normalize the strings "@AxxByy@" to "axx_byy" across the ATD file and remove empty lines.')
     arg_parser.add_argument(metavar="FILE", nargs='?', dest="input_file", help="Input log file (default: stdin)")
     args = arg_parser.parse_args()
-    if args.input_file:
-        file = open(args.input_file, "r")
-    else:
-        file = sys.stdin
+    file = open(args.input_file, "r") if args.input_file else sys.stdin
     start(file)
 
 if __name__ == '__main__':
